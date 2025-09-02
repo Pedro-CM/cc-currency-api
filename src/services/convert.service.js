@@ -2,6 +2,7 @@ import { Rate } from '../models/Rate.js';
 import { Conversions } from '../models/Conversion.js';
 import { conversionSchema } from '../schemas/schemas.js';
 import { BadRequest } from '@feathersjs/errors';
+import { sendToQueue } from '../queue/rabbit.js';
 export class ConvertService {
     /* 
         metodod POST /convert para realizar la conversion de monedas y guardar los logs de las conversiones
@@ -36,7 +37,6 @@ export class ConvertService {
             const formattedValue = Number(convertValue.toFixed(10));
 
             const log = await Conversions.create({
-
                 from: from,
                 to: to,
                 amount: amount,
@@ -47,6 +47,12 @@ export class ConvertService {
                 meta: params
             });
 
+
+            try {
+                await sendToQueue('conversion_Logs', log)
+            } catch (queueError) {
+                console.error('Error al enviar mensaje a la cola de RabbitMQ:', queueError.message);
+            }
             return {
                 from: from,
                 to: to,

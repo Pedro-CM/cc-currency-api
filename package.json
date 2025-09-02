@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start-rabbitmq": "docker-compose up -d rabbitmq",
+    "stop-rabbitmq": "docker-compose down",
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
     "test": "jest --runInBand"
