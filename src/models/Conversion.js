@@ -1,17 +1,15 @@
-import moose from "mongoose";
+import mongoose from 'mongoose';
 
-const ConversionSchema = new moose.Schema({
+const ConversionSchema = new mongoose.Schema({
     from: { type: String, required: true, uppercase: true },
     to: { type: String, required: true, uppercase: true },
     amount: { type: Number, required: true },
     result: { type: Number, required: true },
     rateUsed: { type: String, required: true },
-    meta: { type: Object },
-},
-    {
-        timestamps: true
-    }
-);
+    rate: { type: Number, required: true },
 
-ConversionSchema.index({ base: 1, symbol: 1 }, { unique: true });
-export const Conversion = moose.model('Conversion', ConversionSchema);
+    success: { type: Boolean, default: true },
+    meta: { type: Object },
+}, { timestamps: true });
+
+export const Conversions = mongoose.model('Conversions', ConversionSchema);

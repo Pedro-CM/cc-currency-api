@@ -1,10 +1,7 @@
-import { Conversion } from '../models/Conversion.js';
 import { Rate } from '../models/Rate.js';
-import { ConversionLog } from '../models/conversion-log.model.js';
-
-import { fetchFiatRates } from '../providers/openExchange.js';
-import { fetchCrypto } from '../providers/coingecko.js';
-
+import { Conversions } from '../models/Conversion.js';
+import { conversionSchema } from '../schemas/schemas.js';
+import { BadRequest } from '@feathersjs/errors';
 export class ConvertService {
     /* 
         metodod POST /convert para realizar la conversion de monedas y guardar los logs de las conversiones
@@ -25,35 +22,41 @@ export class ConvertService {
     */
 
     async create(data, params) {
-        const { from, to, amount } = data;
-        if (!from || !to || !amount) throw new BadRequest('Faltan datos requeridos para la conversion.');
-        const fromRate = await Rate.findOne({ symbol: from });
-        const toRate = await Rate.findOne({ symbol: to });
+        const { error, value } = conversionSchema.validate(data);
+        if (error) throw new BadRequest(error.details[0].message);
+        const { from, to, amount } = value;
 
-        if (!fromRate || !toRate) throw new BadRequest('No se encontraron tasas para las monedas indicadas.');
-        const convertValue = (amount / fromRate.value) * toRate.value;
-        const formattedValue = Number(convertValue.toFixed(10));
+        try {
 
-        const log = await ConversionLog.create({
+            const fromRate = await Rate.findOne({ symbol: from });
+            const toRate = await Rate.findOne({ symbol: to });
 
-            from: from,
-            to: to,
-            amount: amount,
-            result: formattedValue,
-            rateUsed: fromRate.symbol,
-            rate: fromRate.value,
-            
-            success: params.success,
-            error: params.error,
-            meta: params
-        });
+            if (!fromRate || !toRate) throw new BadRequest('No se encontraron tasas para las monedas indicadas.');
+            const convertValue = (amount / fromRate.value) * toRate.value;
+            const formattedValue = Number(convertValue.toFixed(10));
 
-        return {
-            from: from,
-            to: to,
-            amount: amount,
-            convertedValue: formattedValue
-        };
+            const log = await Conversions.create({
+
+                from: from,
+                to: to,
+                amount: amount,
+                result: formattedValue,
+                rateUsed: fromRate.symbol,
+                rate: fromRate.value,
+                success: params.success,
+                meta: params
+            });
+
+            return {
+                from: from,
+                to: to,
+                amount: amount,
+                convertedValue: formattedValue
+            };
+        } catch (e) {
+            throw new BadRequest(e.message);
+        }
+
     }
 
 
