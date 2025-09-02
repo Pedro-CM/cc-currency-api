@@ -1,113 +1,130 @@
-API de Conversión de Moneda
-Descripción del Proyecto
-Esta es una API robusta y escalable construida con FeathersJS, diseñada para la conversión de divisas. La API utiliza un sistema de colas de mensajes (RabbitMQ) para el procesamiento asíncrono de registros, y una base de datos MongoDB para almacenar las conversiones realizadas.
+# 💱 API de Conversión de Moneda
 
-Prerrequisitos
-Asegúrate de tener instalado lo siguiente en tu sistema:
+![Node.js](https://img.shields.io/badge/Node.js-18+-green?logo=node.js)  
+![FeathersJS](https://img.shields.io/badge/FeathersJS-v5-blue?logo=feathersjs)  
+![MongoDB](https://img.shields.io/badge/MongoDB-Database-green?logo=mongodb)  
+![RabbitMQ](https://img.shields.io/badge/RabbitMQ-Message--Queue-orange?logo=rabbitmq)  
+![Jest](https://img.shields.io/badge/Tests-Jest-red?logo=jest)
 
-Node.js (versión 18 o superior)
+---
 
-npm (incluido con Node.js)
+## 📖 Descripción del Proyecto
 
-Docker y Docker Compose (para ejecutar RabbitMQ )
+Esta es una **API robusta y escalable** construida con **FeathersJS**, diseñada para la **conversión de divisas**.  
 
-Instalación
+La API utiliza:  
+- 🐇 **RabbitMQ** para el procesamiento asíncrono de registros  
+- 🍃 **MongoDB** para almacenar las conversiones realizadas  
+- ✅ **Joi** para validación de datos  
+- 🧪 **Jest + Supertest** para pruebas unitarias e integración  
+
+
+## 🛠️ Prerrequisitos
+
+Asegúrate de tener instalado:
+
+- [Node.js](https://nodejs.org/) **v18 o superior**  
+- [npm](https://www.npmjs.com/) (incluido con Node.js)  
+- [Docker](https://www.docker.com/) y [Docker Compose](https://docs.docker.com/compose/)  
+
+---
+
+## ⚙️ Instalación
+
 Clona este repositorio:
 
-git clone [URL-DEL-REPOSITORIO]
-
-Navega al directorio del proyecto e instala las dependencias:
-
+```
+git clone https://github.com/Pedro-CM/cc-currency-api.git
 cd cc-currency-api
 npm install
-
-Crea un archivo .env en la raíz del proyecto y configura tus variables de entorno con las siguientes claves:
-
+```
+Crea un archivo .env en la raíz del proyecto:
+```
 PORT=5000
 MONGODB_URI=mongodb://localhost:27017/currency
 RABBIT_URL=amqp://localhost
 RABBIT_QUEUE=conversions
 OXR_APP_ID=
 COINGECKO_API_KEY=
-
-Para RabbitMQ, las credenciales de inicio de sesión predeterminadas son guest para el usuario y guest para la contraseña.
-
-Ejecución del Proyecto
-Modo Desarrollo
-Para iniciar la aplicación en modo desarrollo (con reinicio automático al guardar los cambios):
-
-npm run dev
-
-Modo Producción
-Para iniciar la aplicación en modo de producción:
-
-npm start
-
-Ejecutar RabbitMQ
-El proyecto utiliza Docker Compose para gestionar el servicio de RabbitMQ.
-
-Para iniciar RabbitMQ en segundo plano:
-
+```
+ ## 🐇 RabbitMQ con Docker
+```
+El proyecto incluye scripts para manejar RabbitMQ con **Docker Compose**.
+```
+Iniciar RabbitMQ:
+```
 npm run start-rabbitmq
-
-Para detener RabbitMQ:
-
+```
+Detener RabbitMQ:
+```
 npm run stop-rabbitmq
+```
+🔑 RabbitMQ: credenciales por defecto → usuario: guest | contraseña: guest
 
-Ejecución de las Pruebas
+Accede al panel de RabbitMQ en:
+👉 http://localhost:15672
+```
+Usuario: guest | Contraseña: guest
+```
+## ▶️ Ejecución del Proyecto
+
+### 🔧 Modo Desarrollo
+```
+npm run dev
+```
+## 🏭 Modo Producción
+```
+npm start
+```
+## 🧰 Tecnologías Utilizadas
+
+- ⚡ **FeathersJS** – Framework para construir APIs REST y en tiempo real  
+- 🟢 **Node.js** – Entorno de ejecución de JavaScript  
+- 🍃 **Mongoose** – ODM para MongoDB  
+- ✅ **Joi** – Validación de datos  
+- 🧪 **Jest + Supertest** – Frameworks de pruebas  
+- 🐇 **RabbitMQ** – Sistema de colas de mensajes  
+- 🐳 **Docker** – Gestión de contenedores  
+
+---
+##  Ejecución de las Pruebas
 El proyecto utiliza Jest para las pruebas unitarias y Supertest para las pruebas de integración.
 
 Ejecuta todas las pruebas con el siguiente comando:
-
+```
 npm test
-
-Endpoints de la API
-La API principal está en /convert.
-
-Método
-
-Endpoint
-
-Descripción
-
-POST
-
-/convert
-
-Realiza una conversión de moneda y registra la transacción.
-
-GET
-
-/rates
-
-Obtiene las tasas de conversión actuales (FIAT + Cripto).
-
-GET
-
-/report
-
-Genera y devuelve un informe detallado de las conversiones diarias.
-
-Ejemplo de solicitud
+```
+## Endpoints de la API
+```
 POST /convert
-
+Realiza una conversión de moneda y registra la transacción.
 {
   "from": "USD",
   "to": "EUR",
   "amount": 100
 }
+GET /rates
+Obtiene las tasas de conversión actuales (FIAT + Cripto).
+  {
+            "_id": "68b639c7743ecdcc1e97d769",
+            "symbol": "AAVE",
+            "base": "USD",
+            "__v": 0,
+            "createdAt": "2025-09-02T00:26:47.478Z",
+            "updatedAt": "2025-09-02T19:26:43.365Z",
+            "value": 0.003209860692045965
+        },
+        {
+            "_id": "68b639c7743ecdcc1e97d74c",
+            "base": "USD",
+            "symbol": "ADA",
+            "__v": 0,
+            "createdAt": "2025-09-02T00:26:47.478Z",
+            "updatedAt": "2025-09-02T19:26:43.365Z",
+            "value": 1.221818750519273
+        },
+GET /report
+Genera y devuelve un informe detallado de las conversiones diarias.
+```
 
-Tecnologías Utilizadas
-FeathersJS: Framework para construir APIs REST y en tiempo real.
 
-Node.js: Entorno de ejecución de JavaScript.
-
-Mongoose: Librería para modelar objetos de MongoDB.
-
-Joi: Para la validación de esquemas de datos.
-
-Jest: Framework de pruebas para JavaScript.
-
-RabbitMQ: Sistema de colas de mensajes para el procesamiento asíncrono.
-
-Docker: Para la gestión de contenedores de RabbitMQ.
