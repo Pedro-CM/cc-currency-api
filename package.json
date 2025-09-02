@@ -13,6 +13,7 @@
   "license": "ISC",
   "type": "module",
   "dependencies": {
+    "@api/fastforex": "file:.api/apis/fastforex",
     "@feathersjs/express": "^5.0.34",
     "@feathersjs/feathers": "^5.0.34",
     "@feathersjs/socketio": "^5.0.34",
@@ -20,6 +21,7 @@
     "axios": "^1.11.0",
     "date-fns": "^4.1.0",
     "dotenv": "^17.2.1",
+    "feathers-mongoose": "^8.5.1",
     "joi": "^18.0.1",
     "mongoose": "^8.18.0",
     "pdfmake": "^0.2.20"

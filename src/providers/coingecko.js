@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export async function fetchCrypto() {
+export async function fetchCrypto(base, symbol) {
     try {
         const url = `https://api.coingecko.com/api/v3/coins/markets`
         const headers = {}
@@ -12,7 +12,6 @@ export async function fetchCrypto() {
             params: {
                 vs_currency: 'usd',
                 order: 'market_cap_desc',
-                //per_page: limit,
                 page: 1,
                 sparkline: false,
             }
