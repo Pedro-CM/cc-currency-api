@@ -44,9 +44,12 @@ PORT=5000
 MONGODB_URI=mongodb://localhost:27017/currency
 RABBIT_URL=amqp://localhost
 RABBIT_QUEUE=conversions
-OXR_APP_ID=
-COINGECKO_API_KEY=
+OXR_APP_ID=<REEMPLAZA_CON_TU_API_KEY>
+COINGECKO_API_KEY=<REEMPLAZA_CON_TU_API_KEY>
+
 ```
+## ⚠️ Necesitas registrar una cuenta gratuita en OpenExchangeRates y CoinGecko
+ para obtener tus API keys y colocarlas en el archivo .env.
  ## 🐇 RabbitMQ con Docker
 ```
 El proyecto incluye scripts para manejar RabbitMQ con **Docker Compose**.
